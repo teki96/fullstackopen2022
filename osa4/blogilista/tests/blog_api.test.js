@@ -12,32 +12,13 @@ beforeEach(async () => {
     await Blog.insertMany(helper.initialBlogs)
   })
 
-  const initialBlogs = [
-      {
-        title: "React patterns",
-        author: "Michael Chan",
-        url: "https://reactpatterns.com/",
-        likes: 7,
-      },
-      {
-        title: "Go To Statement Considered Harmful",
-        author: "Edsger W. Dijkstra",
-        url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-        likes: 5,
-      },
-      {
-        title: "Canonical string reduction",
-        author: "Edsger W. Dijkstra",
-        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-        likes: 12,
-      }
-  ]
-
     test('blogs are returned as json', async () => {
         await api
         .get('/api/blogs')
         .expect(200)
         .expect('Content-Type', /application\/json/)
+
+        const response = await api.get('/api/blogs')
 
         assert.strictEqual(response.body.length, helper.initialBlogs.length);
     })
@@ -65,7 +46,7 @@ beforeEach(async () => {
 
         const response = await api.get('/api/blogs')
 
-        assert.strictEqual(response.body.length, initialBlogs.length + 1)
+        assert.strictEqual(response.body.length, helper.initialBlogs.length + 1)
 
         const contents = response.body.map(r => r.title)
         assert(contents.includes('First class tests'))
@@ -102,5 +83,41 @@ beforeEach(async () => {
             .expect(400)
     })
 
+    test('deletion of a blog', async () => {
+        const blogAtStart = await helper.blogsInDb()
+        const blogToDelete = blogAtStart[0]
 
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .expect(204)
 
+        const blogsAtEnd = await helper.blogsInDb()
+
+        assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+
+        const contents = blogsAtEnd.map(r => r.title)
+        assert(!contents.includes(blogToDelete.title))
+    })
+
+    test('updating a blog', async () => {
+        const blogAtStart = await helper.blogsInDb()
+        const blogToUpdate = blogAtStart[0]
+
+        const updatedBlog = {
+            likes: 123
+        }
+
+        await api
+            .put(`/api/blogs/${blogToUpdate.id}`)
+            .send(updatedBlog)
+            .expect(200)
+
+        const blogsAtEnd = await helper.blogsInDb()
+        const updatedBlogInDb = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
+
+        assert.strictEqual(updatedBlogInDb.likes, 123)
+    })
+
+after(async () => {
+    await mongoose.connection.close()
+  })
