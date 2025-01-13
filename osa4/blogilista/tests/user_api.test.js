@@ -9,6 +9,7 @@ const helper = require('./test_helper')
 
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 describe('when there is initially one user in db', () => {
     beforeEach(async () => {
@@ -16,6 +17,8 @@ describe('when there is initially one user in db', () => {
         
         const passwordHash = await bcrypt.hash('sekret', 10)
         const user = new User({ username: 'root', passwordHash })
+        const userForToken = { username: user.username, id: user._id }
+        token = jwt.sign(userForToken, process.env.SECRET)
 
         await user.save()
     })
