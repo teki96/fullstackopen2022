@@ -2,7 +2,18 @@ const { test, describe } = require('node:test')
 const assert = require('node:assert')
 const listHelper = require('../utils/list_helper.js')
 
-describe('favorite blog', () => {
+describe('total likes', () => {
+    const listWithOneBlog = [
+      {
+        _id: '5a422aa71b54a676234d17f8',
+        title: 'Go To Statement Considered Harmful',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+        likes: 5,
+        __v: 0
+      }
+    ]
+
     const blogs = [
         {
           _id: "5a422a851b54a676234d17f7",
@@ -53,11 +64,39 @@ describe('favorite blog', () => {
           __v: 0
         }  
       ]
-
-      test('return the blog with most likes', () => {
-        const result = listHelper.favoriteBlog(blogs)
-        assert.strictEqual(result.title, "Canonical string reduction")
-        assert.strictEqual(result.author, "Edsger W. Dijkstra")
-        assert.strictEqual(result.likes, 12)
+      
+    test('of a empty list is zero', () => {
+      const result = listHelper.totalLikes([])
+      assert.strictEqual(result, 0)
     })
-})
+
+    test('when list has only one blog equals the likes of that', () => {
+      const result = listHelper.totalLikes(listWithOneBlog)
+      assert.strictEqual(result, 5)
+    })
+
+    test('of a bigger list is calculated right', () => {
+        const result = listHelper.totalLikes(blogs)
+        assert.strictEqual(result, 36) // 7 + 5 + 12 + 10 + 0 + 2 = 36
+    })
+
+    test('return the blog with most likes', () => {
+      const result = listHelper.favoriteBlog(blogs)
+      assert.strictEqual(result.title, "Canonical string reduction")
+      assert.strictEqual(result.author, "Edsger W. Dijkstra")
+      assert.strictEqual(result.likes, 12)
+    })
+
+    test('return the author with the most blogs', () => {
+      const result = listHelper.mostBlogs(blogs);
+      assert.strictEqual(result.author, "Robert C. Martin");
+      assert.strictEqual(result.blogs, 3);
+    });
+
+    test('return the author with the most likes', () => {
+      const result = listHelper.mostLikes(blogs);
+      assert.strictEqual(result.author, "Edsger W. Dijkstra");
+      assert.strictEqual(result.likes, 17);
+    });
+    
+  })
