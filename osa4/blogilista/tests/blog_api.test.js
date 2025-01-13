@@ -1,4 +1,4 @@
-const { test, after, beforeEach } = require('node:test')
+const { test, after, beforeEach, describe } = require('node:test')
 const assert = require('node:assert')
 const Blog = require('../models/blog')
 const mongoose = require('mongoose')
@@ -12,6 +12,7 @@ const User = require('../models/user')
 
 let token
 
+describe('when there is initially some blogs saved', () => {
 beforeEach(async () => {
     await Blog.deleteMany({})
     await User.deleteMany({})
@@ -170,3 +171,4 @@ beforeEach(async () => {
 after(async () => {
     await mongoose.connection.close()
   })
+})
