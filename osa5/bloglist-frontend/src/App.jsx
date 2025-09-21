@@ -13,7 +13,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [loginVisible, setLoginVisible] = useState(false)
-  const [notification, setNotification] = useState({message: null, type: null})
+  const [notification, setNotification] = useState({ message: null, type: null })
 
   const blogFormRef = useRef()
 
@@ -31,7 +31,7 @@ const App = () => {
       .getAll()
       .then(blogs => {
         setBlogs( blogs )
-      })  
+      })
   }, [])
 
   const addBlog = (blogObject) => {
@@ -46,7 +46,7 @@ const App = () => {
         }, 5000)
       })
   }
-  
+
   const updateBlog = (updatedBlog) => {
     setBlogs(blogs.map(blog => blog.id === updatedBlog.id ? updatedBlog : blog))
   }
@@ -60,7 +60,7 @@ const App = () => {
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -137,15 +137,15 @@ const App = () => {
 
       {!user && loginForm()}
       {user && <div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
           <p>{user.name} logged in</p>
-          <button onClick={handleLogout} style={{ marginLeft: '10px'}}>logout</button>
-          </div>
-          <Togglable buttonLabel='new blog' ref={blogFormRef}>
-          <BlogForm createBlog={addBlog} user={user}/>
-          </Togglable>
+          <button onClick={handleLogout} style={{ marginLeft: '10px' }}>logout</button>
         </div>
-       }
+        <Togglable buttonLabel='new blog' ref={blogFormRef}>
+          <BlogForm createBlog={addBlog} user={user}/>
+        </Togglable>
+      </div>
+      }
       {sortedBlogs.map(blog =>
         <Blog key={blog.id} blog={blog} updateBlog={updateBlog} handleDelete={handleDelete} user={user} />
       )}

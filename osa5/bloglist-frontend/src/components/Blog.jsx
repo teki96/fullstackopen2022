@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import blogService from '../services/blogs';
+import { useState } from 'react'
+import blogService from '../services/blogs'
 
 const Blog = ({ blog, updateBlog, handleDelete, user }) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
 
   const handleLike = async () => {
-    const updatedBlog = { ...blog, likes: blog.likes + 1 };
-    const returnedBlog = await blogService.likeBlog(blog.id, updatedBlog);
-    console.log(returnedBlog);
-    updateBlog(returnedBlog);
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
+    const returnedBlog = await blogService.likeBlog(blog.id, updatedBlog)
+    console.log(returnedBlog)
+    updateBlog(returnedBlog)
   }
 
   const blogStyle = {
@@ -21,7 +21,7 @@ const Blog = ({ blog, updateBlog, handleDelete, user }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
   return (
     <div style={blogStyle}>
@@ -42,7 +42,7 @@ const Blog = ({ blog, updateBlog, handleDelete, user }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
