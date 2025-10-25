@@ -39,6 +39,15 @@ const App = () => {
     blogService
       .create(blogObject)
       .then(returnedBlog => {
+        
+        if (!returnedBlog.user || !returnedBlog.user.username) {
+          returnedBlog.user = {
+            id: user.id,
+            name: user.name,
+            username: user.username
+          }
+        }
+
         setBlogs(blogs.concat(returnedBlog))
         setNotification({ message: `a new blog ${returnedBlog.title} by ${returnedBlog.author} added`, type: 'success' })
         setTimeout(() => {
@@ -112,7 +121,7 @@ const App = () => {
     return (
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
+          <button onClick={() => setLoginVisible(true)}>login</button>
         </div>
         <div style={showWhenVisible}>
           <LoginForm
@@ -139,7 +148,7 @@ const App = () => {
       {user && <div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <p>{user.name} logged in</p>
-          <button onClick={handleLogout} style={{ marginLeft: '10px' }}>logout</button>
+          <button className='logout' onClick={handleLogout} style={{ marginLeft: '10px' }}>logout</button>
         </div>
         <Togglable buttonLabel='new blog' ref={blogFormRef}>
           <BlogForm createBlog={addBlog} user={user}/>
