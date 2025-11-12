@@ -14,10 +14,10 @@ const notificationSlice = createSlice({
   name: 'notification',
   initialState: 'Welcome to the Anecdote app!',
   reducers: {
-    setNotification(_state, action) {
+    setNotification(state, action) {
       return action.payload
     },
-    clearNotification() {
+    clearNotification(state, action) {
       return ''
     }
   }
