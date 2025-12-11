@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRla2kiLCJpZCI6IjY3ODAzNTQ0ZThmOGI0MWIxZmQyOTZiNiIsImlhdCI6MTczNjU0MDU1NCwiZXhwIjoxNzM2NTQ0MTU0fQ.iHgxPJB8p1SqqPoWdLX6x_l9XNIi2VbKiaL2bnwyr4s
+{
+  "title": "Test Blo",
+  "author": "Teemu Kinnunen",
+  "url": "http://example.com",
+  "likes": 1,
+}
