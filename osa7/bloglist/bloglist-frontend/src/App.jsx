@@ -15,21 +15,20 @@ import {
   deleteBlog,
 } from "./reducers/blogsReducer"
 
+import { logoutUser, setUser } from "./reducers/userReducer"
+
 const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector((state) => state.blogs)
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [user, setUser] = useState(null)
+  const user = useSelector((state) => state.user)
   const [loginVisible, setLoginVisible] = useState(false)
-
   const blogFormRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
   }, [])
@@ -63,25 +62,6 @@ const App = () => {
     }
   }
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      })
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-      setUsername("")
-      setPassword("")
-      dispatch(showNotification(`Welcome ${user.name}`, 5))
-    } catch (exception) {
-      dispatch(showNotification("wrong username or password", 5))
-    }
-  }
-
   const handleDelete = async (blog) => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
       try {
@@ -91,13 +71,6 @@ const App = () => {
         dispatch(showNotification("error deleting blog", 5))
       }
     }
-  }
-
-  const handleLogout = () => {
-    window.localStorage.removeItem("loggedBlogappUser")
-    setUser(null)
-    blogService.setToken(null)
-    dispatch(showNotification("logged out", 5))
   }
 
   const loginForm = () => {
@@ -110,17 +83,16 @@ const App = () => {
           <button onClick={() => setLoginVisible(true)}>login</button>
         </div>
         <div style={showWhenVisible}>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
+          <LoginForm />
           <button onClick={() => setLoginVisible(false)}>cancel</button>
         </div>
       </div>
     )
+  }
+
+  const handleLogout = () => {
+    dispatch(logoutUser())
+    console.log("User logged out")
   }
 
   const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
