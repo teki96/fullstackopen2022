@@ -7,30 +7,30 @@ export const loginUser = (credentials) => {
     const user = await loginService.login(credentials)
     blogService.setToken(user.token)
     window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
-    dispatch(setUser(user))
+    dispatch(logIn(user))
   }
 }
 
 export const logoutUser = () => {
   return (dispatch) => {
     window.localStorage.removeItem("loggedBlogappUser")
-    dispatch(clearUser())
+    dispatch(logOut())
   }
 }
 
-const userSlice = createSlice({
-  name: "user",
+const loginSlice = createSlice({
+  name: "login",
   initialState: null,
   reducers: {
-    setUser: (_state, action) => {
+    logIn: (_state, action) => {
       return action.payload
     },
-    clearUser: () => {
+    logOut: () => {
       return null
     },
   },
 })
 
-export const { setUser, clearUser } = userSlice.actions
+export const { logIn, logOut } = loginSlice.actions
 
-export default userSlice.reducer
+export default loginSlice.reducer

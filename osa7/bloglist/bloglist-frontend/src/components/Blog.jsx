@@ -1,10 +1,12 @@
-import { useState, useRef } from "react"
+import { useState } from "react"
 import blogService from "../services/blogs"
 import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
+import { likeBlog, deleteBlog } from "../reducers/blogsReducer"
 
-const Blog = ({ blog, updateBlog, handleDelete, user }) => {
+const Blog = ({ blog, user }) => {
   const [visible, setVisible] = useState(false)
-  const blogs = useSelector((state) => state.blogs)
+  const dispatch = useDispatch()
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -15,6 +17,16 @@ const Blog = ({ blog, updateBlog, handleDelete, user }) => {
     const returnedBlog = await blogService.updateBlog(blog.id, updatedBlog)
     console.log(returnedBlog)
     updateBlog(returnedBlog)
+  }
+
+  const updateBlog = async (updatedBlog) => {
+    await dispatch(likeBlog(updatedBlog))
+  }
+
+  const handleDelete = async (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      await dispatch(deleteBlog(blog.id))
+    }
   }
 
   const blogStyle = {
