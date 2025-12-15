@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const Users = () => {
   const users = useSelector((state) => state.users)
@@ -23,7 +23,7 @@ const Users = () => {
             <tr
               key={user.id}
               onClick={() => handleUserClick(user.id)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
             >
               <td>{user.name}</td>
               <td>{user.blogs.length}</td>

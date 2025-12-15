@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit"
-import usersService from "../services/users"
+import { createSlice } from '@reduxjs/toolkit'
+import usersService from '../services/users'
 
 export const initializeUsers = () => {
   return async (dispatch) => {
@@ -9,7 +9,7 @@ export const initializeUsers = () => {
 }
 
 const usersSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState: [],
   reducers: {
     setUsers: (_state, action) => {

@@ -1,8 +1,7 @@
-import { useState } from "react"
-import blogService from "../services/blogs"
-import { useSelector } from "react-redux"
-import { useDispatch } from "react-redux"
-import { likeBlog, deleteBlog } from "../reducers/blogsReducer"
+import { useState } from 'react'
+import blogService from '../services/blogs'
+import { useDispatch } from 'react-redux'
+import { likeBlog, deleteBlog } from '../reducers/blogsReducer'
 
 const Blog = ({ blog, user }) => {
   const [visible, setVisible] = useState(false)
@@ -32,7 +31,7 @@ const Blog = ({ blog, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
   }
@@ -42,9 +41,9 @@ const Blog = ({ blog, user }) => {
       <div className="blog" style={blogStyle}>
         <div key={blog.id}>
           <div>
-            {blog.title} {blog.author}{" "}
+            {blog.title} {blog.author}{' '}
             <button onClick={toggleVisibility}>
-              {visible ? "hide" : "view"}
+              {visible ? 'hide' : 'view'}
             </button>
           </div>
           {visible && (

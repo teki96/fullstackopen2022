@@ -1,25 +1,25 @@
-import { createSlice } from "@reduxjs/toolkit"
-import loginService from "../services/login"
-import blogService from "../services/blogs"
+import { createSlice } from '@reduxjs/toolkit'
+import loginService from '../services/login'
+import blogService from '../services/blogs'
 
 export const loginUser = (credentials) => {
   return async (dispatch) => {
     const user = await loginService.login(credentials)
     blogService.setToken(user.token)
-    window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
+    window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
     dispatch(logIn(user))
   }
 }
 
 export const logoutUser = () => {
   return (dispatch) => {
-    window.localStorage.removeItem("loggedBlogappUser")
+    window.localStorage.removeItem('loggedBlogappUser')
     dispatch(logOut())
   }
 }
 
 const loginSlice = createSlice({
-  name: "login",
+  name: 'login',
   initialState: null,
   reducers: {
     logIn: (_state, action) => {

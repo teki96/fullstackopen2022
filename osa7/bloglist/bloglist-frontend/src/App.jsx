@@ -1,19 +1,18 @@
-import { useState, useEffect, useRef } from "react"
-import blogService from "./services/blogs"
-import { useDispatch, useSelector } from "react-redux"
-import { showNotification } from "./reducers/notificationReducer"
-import Togglable from "./components/Togglable"
-import LoginForm from "./components/LoginForm"
-import BlogForm from "./components/BlogForm"
-import Notification from "./components/Notification"
-import { initializeBlogs, createBlog } from "./reducers/blogsReducer"
-import { initializeUsers } from "./reducers/usersReducer"
-import { Routes, Route } from "react-router-dom"
-import Users from "./pages/Users"
-import User from "./pages/User"
-import BlogDetails from "./pages/BlogDetails"
-import { logoutUser, logIn } from "./reducers/loginReducer"
-import Blogs from "./pages/Blogs"
+import { useState, useEffect, useRef } from 'react'
+import blogService from './services/blogs'
+import { useDispatch, useSelector } from 'react-redux'
+import { showNotification } from './reducers/notificationReducer'
+import LoginForm from './components/LoginForm'
+import Notification from './components/Notification'
+import { initializeBlogs, createBlog } from './reducers/blogsReducer'
+import { initializeUsers } from './reducers/usersReducer'
+import { Routes, Route } from 'react-router-dom'
+import Users from './pages/Users'
+import User from './pages/User'
+import BlogDetails from './pages/BlogDetails'
+import { logoutUser, logIn } from './reducers/loginReducer'
+import Blogs from './pages/Blogs'
+import Navbar from './components/NavBar'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -22,7 +21,7 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       dispatch(logIn(user))
@@ -48,13 +47,13 @@ const App = () => {
         )
       )
     } catch (error) {
-      dispatch(showNotification("Error adding blog", 5))
+      dispatch(showNotification('Error adding blog', 5))
     }
   }
 
   const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? "none" : "" }
-    const showWhenVisible = { display: loginVisible ? "" : "none" }
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
 
     return (
       <div>
@@ -71,29 +70,14 @@ const App = () => {
 
   const handleLogout = () => {
     dispatch(logoutUser())
-    console.log("User logged out")
+    console.log('User logged out')
   }
 
   return (
     <div>
-      <h1>Blogs</h1>
+      <Navbar user={user} />
       <Notification />
-
       {!user && loginForm()}
-      {user && (
-        <div>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <p>{user.name} logged in</p>
-            <button
-              className="logout"
-              onClick={handleLogout}
-              style={{ marginLeft: "10px" }}
-            >
-              logout
-            </button>
-          </div>
-        </div>
-      )}
       <Routes>
         <Route path="/" element={<Blogs />} />
         <Route path="/blogs/:id" element={<BlogDetails />} />

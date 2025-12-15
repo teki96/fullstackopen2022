@@ -1,9 +1,9 @@
-import { useState } from "react"
-import { useDispatch } from "react-redux"
-import { createBlog } from "../reducers/blogsReducer"
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogsReducer'
 
 const BlogForm = ({ toggleVisibility, user }) => {
-  const [newBlog, setNewBlog] = useState({ title: "", author: "", url: "" })
+  const [newBlog, setNewBlog] = useState({ title: '', author: '', url: '' })
   const dispatch = useDispatch()
 
   const handleSubmit = async (event) => {
@@ -11,9 +11,9 @@ const BlogForm = ({ toggleVisibility, user }) => {
     try {
       await dispatch(createBlog(newBlog, user))
     } catch (error) {
-      console.error("Error adding blog:", error)
+      console.error('Error adding blog:', error)
     } finally {
-      setNewBlog({ title: "", author: "", url: "" })
+      setNewBlog({ title: '', author: '', url: '' })
       toggleVisibility()
     }
   }

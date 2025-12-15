@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux"
-import { useParams, useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
+import { useParams, useNavigate } from 'react-router-dom'
 
 const User = () => {
   const users = useSelector((state) => state.users)

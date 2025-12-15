@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux"
-import Togglable from "../components/Togglable"
-import BlogForm from "../components/BlogForm"
-import { useRef } from "react"
-import { useNavigate } from "react-router-dom"
+import { useSelector } from 'react-redux'
+import Togglable from '../components/Togglable'
+import BlogForm from '../components/BlogForm'
+import { useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Blogs = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -24,7 +24,7 @@ const Blogs = () => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
   }
@@ -32,20 +32,24 @@ const Blogs = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm toggleFormVisibility={toggleFormVisibility} user={user} />
-      </Togglable>
-      <div>
-        {sortedBlogs.map((blog) => (
-          <div
-            key={blog.id}
-            style={blogStyle}
-            onClick={() => navigateToBlog(blog.id)}
-          >
-            {blog.title} {blog.author}
+      {user && (
+        <>
+          <Togglable buttonLabel="new blog" ref={blogFormRef}>
+            <BlogForm toggleFormVisibility={toggleFormVisibility} user={user} />
+          </Togglable>
+          <div>
+            {sortedBlogs.map((blog) => (
+              <div
+                key={blog.id}
+                style={blogStyle}
+                onClick={() => navigateToBlog(blog.id)}
+              >
+                {blog.title} {blog.author}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   )
 }
