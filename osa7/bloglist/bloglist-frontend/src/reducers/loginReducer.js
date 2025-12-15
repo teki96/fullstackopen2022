@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
+import { showNotification } from './notificationReducer'
 
 export const loginUser = (credentials) => {
   return async (dispatch) => {
@@ -8,6 +9,7 @@ export const loginUser = (credentials) => {
     blogService.setToken(user.token)
     window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
     dispatch(logIn(user))
+    dispatch(showNotification(`Welcome, ${user.name}!`, 5))
   }
 }
 
@@ -15,6 +17,7 @@ export const logoutUser = () => {
   return (dispatch) => {
     window.localStorage.removeItem('loggedBlogappUser')
     dispatch(logOut())
+    dispatch(showNotification('Logged out successfully', 5))
   }
 }
 

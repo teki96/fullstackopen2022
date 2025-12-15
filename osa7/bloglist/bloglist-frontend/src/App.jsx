@@ -1,23 +1,21 @@
-import { useState, useEffect } from 'react'
-import blogService from './services/blogs'
-import { useDispatch, useSelector } from 'react-redux'
-
-import LoginForm from './components/LoginForm'
-import Notification from './components/Notification'
+import { useEffect } from 'react'
 import { initializeBlogs } from './reducers/blogsReducer'
 import { initializeUsers } from './reducers/usersReducer'
+import { logIn } from './reducers/loginReducer'
+import { useDispatch, useSelector } from 'react-redux'
 import { Routes, Route } from 'react-router-dom'
+import blogService from './services/blogs'
+import LoginForm from './components/LoginForm'
+import Notification from './components/Notification'
 import Users from './pages/Users'
 import User from './pages/User'
 import BlogDetails from './pages/BlogDetails'
-import { logIn } from './reducers/loginReducer'
 import Blogs from './pages/Blogs'
 import Navbar from './components/NavBar'
 
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.login)
-  const [loginVisible, setLoginVisible] = useState(false)
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -35,28 +33,11 @@ const App = () => {
     }
   }, [dispatch, user])
 
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>login</button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div>
       <Navbar user={user} />
       <Notification />
-      {!user && loginForm()}
+      {!user && <LoginForm />}
       <Routes>
         <Route path="/" element={<Blogs />} />
         <Route path="/blogs/:id" element={<BlogDetails />} />
