@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import blogService from './services/blogs'
 import { useDispatch, useSelector } from 'react-redux'
-import { showNotification } from './reducers/notificationReducer'
+
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import { initializeBlogs, createBlog } from './reducers/blogsReducer'
+import { initializeBlogs } from './reducers/blogsReducer'
 import { initializeUsers } from './reducers/usersReducer'
 import { Routes, Route } from 'react-router-dom'
 import Users from './pages/Users'
 import User from './pages/User'
 import BlogDetails from './pages/BlogDetails'
-import { logoutUser, logIn } from './reducers/loginReducer'
+import { logIn } from './reducers/loginReducer'
 import Blogs from './pages/Blogs'
 import Navbar from './components/NavBar'
 
@@ -18,7 +18,6 @@ const App = () => {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.login)
   const [loginVisible, setLoginVisible] = useState(false)
-  const blogFormRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -36,21 +35,6 @@ const App = () => {
     }
   }, [dispatch, user])
 
-  const addBlog = async (blogObject) => {
-    blogFormRef.current.toggleVisibility()
-    try {
-      await dispatch(createBlog(blogObject, user))
-      dispatch(
-        showNotification(
-          `a new blog ${blogObject.title} by ${blogObject.author} added`,
-          5
-        )
-      )
-    } catch (error) {
-      dispatch(showNotification('Error adding blog', 5))
-    }
-  }
-
   const loginForm = () => {
     const hideWhenVisible = { display: loginVisible ? 'none' : '' }
     const showWhenVisible = { display: loginVisible ? '' : 'none' }
@@ -66,11 +50,6 @@ const App = () => {
         </div>
       </div>
     )
-  }
-
-  const handleLogout = () => {
-    dispatch(logoutUser())
-    console.log('User logged out')
   }
 
   return (

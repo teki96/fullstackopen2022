@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useNavigate } from 'react-router-dom'
 import blogService from '../services/blogs'
 import { likeBlog, deleteBlog } from '../reducers/blogsReducer'
+import BlogComment from '../components/BlogComment'
 
 const BlogDetails = () => {
   const blogs = useSelector((state) => state.blogs)
@@ -48,6 +49,7 @@ const BlogDetails = () => {
           delete
         </button>
       )}
+      <BlogComment blog={blog} />
     </div>
   )
 }

@@ -25,6 +25,13 @@ export const likeBlog = (updatedBlog) => {
   }
 }
 
+export const addComment = (id, comment) => {
+  return async (dispatch) => {
+    const updatedBlog = await blogsService.addComment(id, comment)
+    dispatch(addLike(updatedBlog))
+  }
+}
+
 const sortBlogs = (blogs) => {
   return blogs.slice().sort((a, b) => b.likes - a.likes)
 }
